@@ -70,3 +70,20 @@ void loop() {
   encabezado();
   convertirMensajeAPaquete();
 }
+
+bool comprobarProtocolo(){
+  bool valorProtocolo = false;
+  int i = 0;
+  unsigned long currentMillis = millis();
+  while(i<7)
+    if (currentMillis - previousMillis >= period){
+    previousMillis = currentMillis;
+     /* if (sensorLectura()==valorProtocolo) valorProtocolo = !valorProtocolo;
+      else return false;
+      Serial.println(valorProtocolo);
+      i++;*/
+      Serial.println(sensorLectura());
+      i++;
+      }
+  return true;
+}
