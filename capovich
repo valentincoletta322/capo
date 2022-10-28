@@ -2,6 +2,9 @@
 
 int ledPIN = 5;
 
+unsigned long previousMillis = 0;
+const long period = 1000; 
+
 void convertirMensajeAPaquete(){
 
   String myText = "Hola";
@@ -16,7 +19,7 @@ void convertirMensajeAPaquete(){
 
         Serial.print(m);
 
-        delay(200);
+        delay(500);
   }
 
   Serial.println("Mensaje ahora:");
@@ -36,7 +39,7 @@ void convertirMensajeAPaquete(){
 
         Serial.println(bytes);
 
-        delay(200);
+        delay(500);
 
       }
 
@@ -54,10 +57,16 @@ void convertirMensajeAPaquete(){
 }
 
 void encabezado(){
-  for(int i=0; i<8;i++){
-    if(i%2!=0) digitalWrite(ledPIN,HIGH);
-    else digitalWrite(ledPIN,LOW);
-    delay(200);
+  int i = 1;
+  while(i<9){
+    unsigned long currentMillis = millis();
+    if (currentMillis - previousMillis >= period){ 
+      previousMillis = currentMillis; 
+      if(i%2!=0) digitalWrite(ledPIN,HIGH);
+      else digitalWrite(ledPIN,LOW);
+      Serial.println(i%2);
+      i++;
+    }
   }
 }
 
@@ -68,22 +77,5 @@ void setup() {
 
 void loop() {
   encabezado();
-  convertirMensajeAPaquete();
-}
-
-bool comprobarProtocolo(){
-  bool valorProtocolo = false;
-  int i = 0;
-  unsigned long currentMillis = millis();
-  while(i<7)
-    if (currentMillis - previousMillis >= period){
-    previousMillis = currentMillis;
-     /* if (sensorLectura()==valorProtocolo) valorProtocolo = !valorProtocolo;
-      else return false;
-      Serial.println(valorProtocolo);
-      i++;*/
-      Serial.println(sensorLectura());
-      i++;
-      }
-  return true;
+  //convertirMensajeAPaquete();
 }
